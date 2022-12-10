@@ -1,79 +1,101 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Trabalho
 {
     class Program
     {
+        static StreamReader arq_entrada = new StreamReader("entrada.txt");
+        static StreamWriter arq_saida = new StreamWriter("saida.txt");
+        
         static void Main(string[] args)
         {
             //VARIAVEIS
             double Saldo = 0;
-            int Menu = 6;
+            int Menu = 0;
             int ContaTempo = 0;
             double ChequeEspecialInicial = 0;
             double ChequeEspecialAtual;
 
             //INICIALIZAÇÃO DE CONTA
-            ChequeEspecialInicial = double.Parse(Console.ReadLine());
+            ChequeEspecialInicial = double.Parse(arq_entrada.ReadLine());
             ChequeEspecialAtual = ChequeEspecialInicial;
 
             //SWITCH
-            switch (Menu)
+            while (Menu != 6)
             {
-                case 1:
-                    ConsultarSaldo(Saldo);
-                    ContaTempo++;
-                    break;
+                Menu = int.Parse(arq_entrada.ReadLine());
+                switch (Menu)
+                {
+                    case 1:
+                        ConsultarSaldo(Saldo);
+                        ContaTempo++;
+                        break;
 
-                case 2:
-                    double[] ValorSacado = RealizarSaque(Saldo, ChequeEspecialAtual);
-                    Saldo = ValorSacado[0];
-                    ChequeEspecialAtual = ValorSacado[1];
-                    ContaTempo++;
-                    break;
+                    case 2:
+                        Tuple<double,double> ValorSacado = RealizarSaque(Saldo, ChequeEspecialAtual);
+                        Saldo = ValorSacado.Item1;
+                        ChequeEspecialAtual = ValorSacado.Item2;
+                        ContaTempo++;
+                        break;
 
-                case 3:
-                    double[] ValorDepositado = RealizarDeposito(Saldo, ChequeEspecialInicial, ChequeEspecialAtual);
-                    Saldo = ValorDepositado[0];
-                    ChequeEspecialAtual = ValorDepositado[1];
-                    ContaTempo++;
-                    break;
+                    case 3:
+                        Tuple<double, double> ValorDepositado = RealizarDeposito(Saldo, ChequeEspecialInicial, ChequeEspecialAtual);
+                        Saldo = ValorDepositado.Item1;
+                        ChequeEspecialAtual = ValorDepositado.Item2;
+                        ContaTempo++;
+                        break;
 
-                case 4:
-                    double[] ContaPaga = PagarConta(Saldo, ChequeEspecialAtual);
-                    Saldo = ContaPaga[0];
-                    ChequeEspecialAtual = ContaPaga[1];
-                    ContaTempo++;
-                    break;
+                    case 4:
+                        Tuple<double, double> ContaPaga = PagarConta(Saldo, ChequeEspecialAtual);
+                        Saldo = ContaPaga.Item1;
+                        ChequeEspecialAtual = ContaPaga.Item2;
+                        ContaTempo++;
+                        break;
 
-                case 5:
-
-                    break;
-                case 6:
-
-                    break;
-
+                    case 5:
+                            
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        Console.WriteLine("VALOR DE MENU INFORMADO INCORRETO");
+                        break;  
+                }
             }
-
+            arq_entrada.Close();
+            arq_saida.Close();
         }
+
+        public static List<double> ExtratoBancario(double lançamento)
+        {
+            List<double> extrato = new List<double>();
+            if (extrato.Count == 10)
+            {
+                extrato.RemoveAt(extrato.Count - 1);
+                extrato.Insert(0, lançamento);
+            } else extrato.Add(lançamento);
+
+            return extrato;
+        }
+        
         public static void ConsultarSaldo(double Saldo) // PROCEDIMENTO DE MOSTRAR O SALDO
         {
 
-            Console.WriteLine(Saldo);
+            Console.WriteLine("SALDO DE: " + Saldo);
+            arq_saida.WriteLine($"SALDO DE {Saldo}");
         }
 
-        public static double[] RealizarSaque(double Saldo, double ChequeEspecialAtual) // FUNÇÃO PARA SAQUE
+        public static Tuple<double, double> RealizarSaque(double Saldo, double ChequeEspecialAtual) // FUNÇÃO PARA SAQUE
         {
             // INFORMANDO O VALOR DE SAQUE
-            Console.WriteLine("VALOR DO SAQUE: ");
-            double.TryParse(Console.ReadLine(), out double ValorSacado);
+            double.TryParse(arq_entrada.ReadLine(), out double ValorSacado);
+            Console.WriteLine("VALOR DO SAQUE: " + ValorSacado);
 
             // VALORES SACADOS FINAIS
             double SaldoSacado = 0;
             double ChequeEspecialSacado = 0;
-
-            //VETOR DE RETORNO
-            double[] SaldoEChequeEspecial = new double[1];
 
 
             // CONDIÇÕES PARA O VALOR SACADO:
@@ -86,29 +108,26 @@ namespace Trabalho
             }
             else if ((ValorSacado > Saldo) && (ValorSacado < ChequeEspecialAtual)) // MAIOR QUE O SALDO E MENOR QUE O CHEQUE ESPECIAL
             {
-
+                arq_saida.WriteLine($"UTILIZOU {ValorSacado} DO CHEQUE ESPECIAL PARA SACAR");
                 ChequeEspecialSacado = ChequeEspecialAtual - (ValorSacado - Saldo);
 
             }
             else // MENOR QUE O SALDO
             {
                 SaldoSacado = Saldo - ValorSacado;
+                arq_saida.WriteLine("SACOU VALOR DE: " + SaldoSacado);
                 ChequeEspecialSacado = ChequeEspecialAtual;
             }
             // ATRIBUIÇÕES DOS VALORES DENTRO DO VETOR
-            SaldoEChequeEspecial[0] = SaldoSacado;
-            SaldoEChequeEspecial[1] = ChequeEspecialSacado;
 
-            return SaldoEChequeEspecial;
+            return Tuple.Create(SaldoSacado, ChequeEspecialSacado);
         }
 
-        public static double[] RealizarDeposito(double Saldo, double ChequeEspecialInicial, double ChequeEspecialAtual) // FUNÇÃO DE DEPOSITO
+        public static Tuple<double, double> RealizarDeposito(double Saldo, double ChequeEspecialInicial, double ChequeEspecialAtual) // FUNÇÃO DE DEPOSITO
         {
-            Console.WriteLine("VALOR DO DEPOSITO: ");
-            double.TryParse(Console.ReadLine(), out double ValorDeposito);
+            double.TryParse(arq_entrada.ReadLine(), out double ValorDeposito);
+            Console.WriteLine("VALOR DO DEPOSITO: " + ValorDeposito);
 
-            // VETOR DE RETORNO
-            double[] SaldoEChequeEspecial = new double[1];
             double SaldoComDeposito = 0;
             double UsoDoCheque; // VALOR PRA SACAR
 
@@ -122,33 +141,24 @@ namespace Trabalho
                     SaldoComDeposito = Saldo + ValorDeposito;
                     ChequeEspecialAtual = ChequeEspecialInicial;
                 }
-
-
-
             }
             else
             {
                 SaldoComDeposito = Saldo + ValorDeposito;
+                arq_saida.WriteLine($"DEPOSITOU {SaldoComDeposito}");
             }
 
-            SaldoEChequeEspecial[0] = SaldoComDeposito;
-            SaldoEChequeEspecial[1] = ChequeEspecialAtual;
-
-
-            return SaldoEChequeEspecial;
+            return Tuple.Create(SaldoComDeposito, ChequeEspecialAtual);
         }
 
-        public static double[] PagarConta(double Saldo, double ChequeEspecialAtual)
+        public static Tuple<double, double> PagarConta(double Saldo, double ChequeEspecialAtual)
         {
-            Console.WriteLine("VALOR DA CONTA PAGA: ");
-            double.TryParse(Console.ReadLine(), out double ValorPago);
+            double.TryParse(arq_entrada.ReadLine(), out double ValorPago);
+            Console.WriteLine("VALOR DA CONTA PAGA: " + ValorPago);
 
             // VALORES PAGOS FINAIS
             double SaldoPago = 0;
             double ChequeEspecialPago = 0;
-
-            //VETOR DE RETORNO
-            double[] SaldoEChequeEspecial = new double[1];
 
 
             // CONDIÇÕES PARA O PAGAMENTO:
@@ -157,30 +167,20 @@ namespace Trabalho
                 Console.WriteLine("IMPOSSIVEL DE REALIZAR O PAGAMENTO");
                 ChequeEspecialPago = ChequeEspecialAtual;
                 SaldoPago = Saldo;
-
             }
             else if ((ValorPago > Saldo) && (ValorPago < ChequeEspecialAtual)) // MAIOR QUE O SALDO E MENOR QUE O CHEQUE ESPECIAL
             {
-
                 ChequeEspecialPago = ChequeEspecialAtual - (ValorPago - Saldo);
-
+                arq_saida.WriteLine($"PAGOU CONTA NO VALOR DE {ValorPago} UTILIZANDO CHEQUE ESPECIAL");
             }
             else // MENOR QUE O SALDO
             {
                 SaldoPago = Saldo - ValorPago;
+                arq_saida.WriteLine($"PAGOU CONTA NO VALOR DE {ValorPago}");
                 ChequeEspecialPago = ChequeEspecialAtual;
             }
-            // ATRIBUIÇÕES DOS VALORES DENTRO DO VETOR
-            SaldoEChequeEspecial[0] = SaldoPago;
-            SaldoEChequeEspecial[1] = ChequeEspecialPago;
 
-            return SaldoEChequeEspecial;
-
-
-
-
+            return Tuple.Create<double, double>(SaldoPago, ChequeEspecialPago);
         } // FUNÇÃO PARA PAGAR CONTA
     }
-
-}
 }
