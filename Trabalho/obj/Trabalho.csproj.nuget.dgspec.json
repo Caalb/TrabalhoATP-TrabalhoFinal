@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/caalb/RiderProjects/Trabalho/Trabalho/Trabalho.csproj": {}
+    "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\Trabalho.csproj": {}
   },
   "projects": {
-    "/home/caalb/RiderProjects/Trabalho/Trabalho/Trabalho.csproj": {
+    "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\Trabalho.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/caalb/RiderProjects/Trabalho/Trabalho/Trabalho.csproj",
+        "projectUniqueName": "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\Trabalho.csproj",
         "projectName": "Trabalho",
-        "projectPath": "/home/caalb/RiderProjects/Trabalho/Trabalho/Trabalho.csproj",
-        "packagesPath": "/home/caalb/.nuget/packages/",
-        "outputPath": "/home/caalb/RiderProjects/Trabalho/Trabalho/obj/",
+        "projectPath": "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\Trabalho.csproj",
+        "packagesPath": "C:\\Users\\caalb\\.nuget\\packages\\",
+        "outputPath": "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/caalb/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\caalb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,16 +45,23 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.17, 5.0.17]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.408/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "WLbY3se0t5MvjQLxoYKq2H89xFgn9SxDi/uQMLeGeom/x9/v1OVKNYH1mozZCEI+1ZkzfcNeyCHWoINKZ0aFpw==",
+  "dgSpecHash": "NdOnPbGytikgsiBh/jrAxGGYhsx93RDlk5+LqFLnLk/Sk/+wyIS2gbhmoeMAGklJgeDjoEung09+2qHxPoS+dA==",
   "success": true,
-  "projectFilePath": "/home/caalb/RiderProjects/Trabalho/Trabalho/Trabalho.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "F:\\Projetos\\TrabalhoATP-TrabalhoFinal\\Trabalho\\Trabalho.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\caalb\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
   "logs": []
 }
